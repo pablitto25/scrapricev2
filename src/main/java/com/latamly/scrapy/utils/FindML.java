@@ -18,15 +18,9 @@ public class FindML {
     public FindPriceModel findML(String nombre) {
 
         System.setProperty("webdriver.chrome.driver",
-                "/home/ubuntu/findmercadolibreprices/src/main/resources/chromedriver/chromedriver");
+                "C:\\Users\\pabli\\OneDrive\\Escritorio\\Trabajo\\findmercadolibreprices\\src\\main\\resources\\chromedriver\\chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
 
-        options.setBinary("/opt/google/chrome/google-chrome");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--headless");
-        options.addArguments("--disable-gpu");
-        options.setExperimentalOption("useAutomationExtension", false);
-        
         String nombreProducto = "";
 
         // Convertir el nombre del producto a minúsculas
@@ -35,7 +29,7 @@ public class FindML {
         WebDriver driver = new ChromeDriver(options);
         driver.get("https://listado.mercadolibre.com.ar/" + nombreProducto);
         driver.manage().window().maximize();
-
+        String[] keywords = nombreProducto.split(" ");
         List<WebElement> items = driver.findElements(By.className("ui-search-layout__item"));
 
         String tituloPrecioMasBajo = null;
@@ -48,24 +42,18 @@ public class FindML {
                 WebElement titleElement = li.findElement(By.className("ui-search-item__title"));
                 WebElement priceElement = li.findElement(By.className("andes-money-amount__fraction"));
 
+                String titulo = titleElement.getText();
+
                 // Validar si el título contiene las palabras "Redragon", "Zeus" y "Wireless"
-                String titleText = titleElement.getText().toLowerCase();
-                if (!titleText.contains(nombreProducto)) {
-                    // Si el título no contiene el nombre del producto, pasar al siguiente elemento
-                    continue;
-                }
-                String[] keywords = nombreProducto.split(" ");
-                boolean containsAllKeywords = true;
+                boolean allKeywordsPresent = true;
                 for (String keyword : keywords) {
-                    if (!titleText.contains(keyword)) {
-                        containsAllKeywords = false;
+                    if (!titulo.toLowerCase().contains(keyword.toLowerCase())) {
+                        allKeywordsPresent = false;
                         break;
                     }
                 }
 
-                // Si el título no contiene todas las palabras clave, pasar al siguiente
-                // elemento
-                if (!containsAllKeywords) {
+                if (!allKeywordsPresent) {
                     continue;
                 }
 
