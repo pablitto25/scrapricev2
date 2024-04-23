@@ -18,7 +18,7 @@ public class FindML {
     public FindPriceModel findML(String nombre) {
 
         System.setProperty("webdriver.chrome.driver",
-                "C:\\Users\\pabli\\OneDrive\\Escritorio\\Trabajo\\findmercadolibreprices\\src\\main\\resources\\chromedriver\\chromedriver.exe");
+                "C:\\Users\\Pablo Cortes\\Desktop\\scrapricev2 final\\src\\main\\resources\\chromedriver\\chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
 
         String nombreProducto = "";
@@ -98,9 +98,14 @@ public class FindML {
 
         } catch (org.openqa.selenium.NoSuchElementException | NumberFormatException e) {
             System.out.println(e);
+        }finally {
+            // Asegúrate de cerrar el WebDriver incluso si ocurre una excepción
+            if (driver != null) {
+                driver.quit();
+            }
         }
 
-        driver.close();
+       
 
         FindPriceModel producto = new FindPriceModel(tituloPrecioMasBajo, precioMasBajo);
         return producto;
