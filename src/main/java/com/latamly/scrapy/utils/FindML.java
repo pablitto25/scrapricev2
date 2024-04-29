@@ -35,6 +35,7 @@ public class FindML {
         List<WebElement> items = driver.findElements(By.className("ui-search-layout__item"));
 
         String tituloPrecioMasBajo = null;
+        String enlacePublicacion = null;
         Double precioMasBajo = null;
         String ratingMasBajo = null;
         String reviewMasBajo = null;
@@ -52,6 +53,7 @@ public class FindML {
         try {
             for (WebElement li : items) {
                 WebElement titleElement = li.findElement(By.className("ui-search-item__title"));
+                WebElement linkElement = li.findElement(By.xpath("//a[contains(@title,'" + titleElement.getText() +  "')]"));
                 /* WebElement priceElement = li.findElement(By.className("andes-money-amount__fraction")); */
                 List<WebElement> precios = li.findElements(By.className("andes-money-amount__fraction"));
                 
@@ -114,7 +116,7 @@ public class FindML {
                 }
 
                 for(WebElement pc : precios){
-                    double priceFormated = Double.parseDouble(pc.getText());
+                    double priceFormated = Double.parseDouble(pc.getText().replaceAll("[^\\d.]", ""));
                     System.out.println(pc.getText());
                     System.out.println(precios.size());
                     if (priceFormated < priceCompared) {
@@ -151,6 +153,7 @@ public class FindML {
                     // Si el precio actual es más bajo, actualiza el precio más bajo y guarda los
                     // detalles del producto
                     tituloPrecioMasBajo = titleElement.getText();
+                    enlacePublicacion = linkElement.getAttribute("href");
                     precioMasBajo = priceCompared;
                     ratingMasBajo = ratingValue;
                     reviewMasBajo = reviewValue;
@@ -172,7 +175,7 @@ public class FindML {
             }
         }
 
-        FindPriceModel producto = new FindPriceModel(tituloPrecioMasBajo, precioMasBajo);
+        FindPriceModel producto = new FindPriceModel(tituloPrecioMasBajo, enlacePublicacion, precioMasBajo);
         return producto;
 
     }

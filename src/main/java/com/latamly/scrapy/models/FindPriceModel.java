@@ -3,15 +3,17 @@ package com.latamly.scrapy.models;
 public class FindPriceModel {
 
     private String title;
+    private String url;
     private double price;
     private double reviews;
     private double ranking;
 
-    public FindPriceModel(String title, double price, double reviews, double ranking) {
+    public FindPriceModel(String title, String url, double price/* , double reviews, double ranking */) {
         this.title = title;
+        this.url = url;
         this.price = price;
-        this.reviews = reviews;
-        this.ranking = ranking;
+        /* this.reviews = reviews;
+        this.ranking = ranking; */
     }
 
     
@@ -28,9 +30,16 @@ public class FindPriceModel {
     public String getTitle() {
         return title;
     }
+    public String getUrl() {
+        return url;
+    }
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public double getPrice() {
@@ -57,10 +66,13 @@ public class FindPriceModel {
         this.ranking = ranking;
     }
 
+
+
     @Override
     public String toString() {
-        return "FindPriceModel [title=" + title + ", price=" + price + ", reviews=" + reviews + ", ranking=" + ranking
-                + "]";
+        return "FindPriceModel [title=" + title + ", url=" + url + ", price=" + price + "]";
     }
+
+    
 
 }
